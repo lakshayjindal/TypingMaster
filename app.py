@@ -1,15 +1,11 @@
+
 import os
-from models import User, TypingScore
 from flask import Flask, render_template, request, redirect, url_for, flash
-from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
+from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
-from sqlalchemy.orm import DeclarativeBase
+from database import db
+from models import User, TypingScore
 
-class Base(DeclarativeBase):
-    pass
-
-db = SQLAlchemy(model_class=Base)
 app = Flask(__name__)
 app.secret_key = os.environ.get("FLASK_SECRET_KEY") or "typing_tutor_secret_key"
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///typing_tutor.db"
@@ -19,9 +15,6 @@ db.init_app(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
-
-# Import models after db initialization
-
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -39,10 +32,6 @@ def login():
         user = User.query.filter_by(username=username).first()
         
         if user and check_password_hash(user.password_hash, password):
-            if password is not None:
-                login_user(user)
-                return redirect(url_for('practice'))
-        flash('Invalid username or password')
             login_user(user)
             return redirect(url_for('practice'))
         flash('Invalid username or password')
@@ -105,7 +94,6 @@ def leaderboard():
         db.func.avg(TypingScore.accuracy).label('avg_accuracy')
     ).join(TypingScore).group_by(User.id).order_by(db.desc('max_wpm')).limit(10).all()
 
-    # Convert the scores to a list of dictionaries with computed full_name
     formatted_scores = [{
         'full_name': f"{score.first_name} {score.last_name}",
         'region': score.region,
