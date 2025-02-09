@@ -95,5 +95,12 @@ def leaderboard():
     
     return render_template('leaderboard.html', scores=scores)
 
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    flash('You have been logged out successfully.')
+    return redirect(url_for('index'))
+
 with app.app_context():
     db.create_all()
