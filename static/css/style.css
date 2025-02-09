@@ -1,0 +1,89 @@
+:root {
+    --primary-color: #3498db;
+    --secondary-color: #2ecc71;
+    --accent-color: #e74c3c;
+    --background-color: #f5f5f5;
+    --text-color: #333333;
+}
+
+body {
+    font-family: 'Open Sans', sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+.hindi-text {
+    font-family: 'Noto Sans', sans-serif;
+}
+
+.typing-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.text-display {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    min-height: 100px;
+    font-size: 1.2em;
+    line-height: 1.5;
+}
+
+.keyboard-display {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.key {
+    display: inline-block;
+    margin: 2px;
+    padding: 10px;
+    min-width: 40px;
+    text-align: center;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: default;
+}
+
+.key.active {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.key.error {
+    background-color: var(--accent-color);
+    color: white;
+}
+
+.stats .card {
+    text-align: center;
+}
+
+.stats .card-text {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+#typing-input {
+    font-family: monospace;
+    font-size: 1.2em;
+}
+
+.correct {
+    color: var(--secondary-color);
+}
+
+.incorrect {
+    color: var(--accent-color);
+    text-decoration: underline;
+}
+
+.current {
+    background-color: #e8e8e8;
+}

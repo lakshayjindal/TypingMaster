@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="typing-container">
+    <div class="controls mb-4">
+        <select id="languageSelect" class="form-select mb-3">
+            <option value="english">English</option>
+            <option value="hindi">Hindi (Inscript)</option>
+            <option value="hindi-rem">Hindi (Remington)</option>
+        </select>
+    </div>
+
+    <div class="typing-area mb-4">
+        <div id="text-display" class="text-display p-3 mb-3"></div>
+        <input type="text" id="typing-input" class="form-control" placeholder="Start typing here...">
+    </div>
+
+    <div class="stats mb-4">
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">WPM</h5>
+                        <p id="wpm" class="card-text">0</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Accuracy</h5>
+                        <p id="accuracy" class="card-text">0%</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="keyboard-display" class="keyboard-display mb-4"></div>
+</div>
+
+<script src="{{ url_for('static', filename='js/keyboard.js') }}"></script>
+<script src="{{ url_for('static', filename='js/typing.js') }}"></script>
+{% endblock %}

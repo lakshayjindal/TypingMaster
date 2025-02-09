@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="text-center py-5">
+    <h1 class="display-4 mb-4">Welcome to IT Computer Education Typing Tutor</h1>
+    <p class="lead mb-4">Improve your typing skills in English and Hindi</p>
+    
+    {% if current_user.is_authenticated %}
+    <a href="{{ url_for('practice') }}" class="btn btn-primary btn-lg">Start Practice</a>
+    {% else %}
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Get Started</h5>
+                    <p class="card-text">Create an account or login to start improving your typing skills.</p>
+                    <a href="{{ url_for('register') }}" class="btn btn-primary me-2">Register</a>
+                    <a href="{{ url_for('login') }}" class="btn btn-outline-primary">Login</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
