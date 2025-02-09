@@ -1,4 +1,5 @@
 import os
+from models import User, TypingScore
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
@@ -20,7 +21,7 @@ login_manager.init_app(app)
 login_manager.login_view = 'login'
 
 # Import models after db initialization
-from models import User, TypingScore
+
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -38,6 +39,10 @@ def login():
         user = User.query.filter_by(username=username).first()
         
         if user and check_password_hash(user.password_hash, password):
+            if password is not None:
+                login_user(user)
+                return redirect(url_for('practice'))
+        flash('Invalid username or password')
             login_user(user)
             return redirect(url_for('practice'))
         flash('Invalid username or password')
