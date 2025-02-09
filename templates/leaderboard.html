@@ -3,15 +3,15 @@
 {% block content %}
 <div class="container py-4">
     <h1 class="display-4 mb-4 text-center">Typing Speed Leaderboard</h1>
-    
-    <div class="card">
+
+    <div class="card bg-dark text-light">
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-hover">
+                <table class="table table-hover table-dark">
                     <thead class="table-primary">
                         <tr>
                             <th>Rank</th>
-                            <th>Username</th>
+                            <th>Name</th>
                             <th>Region</th>
                             <th>Best WPM</th>
                             <th>Average Accuracy</th>
@@ -21,7 +21,7 @@
                         {% for score in scores %}
                         <tr>
                             <td>{{ loop.index }}</td>
-                            <td>{{ score.username }}</td>
+                            <td>{{ score.full_name }}</td>
                             <td>{{ score.region }}</td>
                             <td>{{ "%.1f"|format(score.max_wpm) }}</td>
                             <td>{{ "%.1f"|format(score.avg_accuracy) }}%</td>

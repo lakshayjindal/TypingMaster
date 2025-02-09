@@ -48,14 +48,20 @@ def register():
     if request.method == 'POST':
         username = request.form.get('username')
         password = request.form.get('password')
+        first_name = request.form.get('first_name')
+        last_name = request.form.get('last_name')
+        phone_number = request.form.get('phone_number')
         region = request.form.get('region')
-        
+
         if User.query.filter_by(username=username).first():
             flash('Username already exists')
             return redirect(url_for('register'))
-            
+
         user = User(
             username=username,
+            first_name=first_name,
+            last_name=last_name,
+            phone_number=phone_number,
             password_hash=generate_password_hash(password),
             region=region
         )
@@ -87,13 +93,22 @@ def submit_score():
 @app.route('/leaderboard')
 def leaderboard():
     scores = db.session.query(
-        User.username,
+        User.first_name,
+        User.last_name,
         User.region,
         db.func.max(TypingScore.wpm).label('max_wpm'),
         db.func.avg(TypingScore.accuracy).label('avg_accuracy')
     ).join(TypingScore).group_by(User.id).order_by(db.desc('max_wpm')).limit(10).all()
-    
-    return render_template('leaderboard.html', scores=scores)
+
+    # Convert the scores to a list of dictionaries with computed full_name
+    formatted_scores = [{
+        'full_name': f"{score.first_name} {score.last_name}",
+        'region': score.region,
+        'max_wpm': score.max_wpm,
+        'avg_accuracy': score.avg_accuracy
+    } for score in scores]
+
+    return render_template('leaderboard.html', scores=formatted_scores)
 
 @app.route('/logout')
 @login_required

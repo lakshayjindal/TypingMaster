@@ -3,7 +3,7 @@
 {% block content %}
 <div class="row justify-content-center">
     <div class="col-md-6">
-        <div class="card">
+        <div class="card bg-dark text-light">
             <div class="card-header">
                 <h4 class="mb-0">Register</h4>
             </div>
@@ -11,15 +11,27 @@
                 <form method="POST">
                     <div class="mb-3">
                         <label for="username" class="form-label">Username</label>
-                        <input type="text" class="form-control" id="username" name="username" required>
+                        <input type="text" class="form-control bg-dark text-light" id="username" name="username" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="first_name" class="form-label">First Name</label>
+                        <input type="text" class="form-control bg-dark text-light" id="first_name" name="first_name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="last_name" class="form-label">Last Name</label>
+                        <input type="text" class="form-control bg-dark text-light" id="last_name" name="last_name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="phone_number" class="form-label">Phone Number</label>
+                        <input type="tel" class="form-control bg-dark text-light" id="phone_number" name="phone_number" required>
                     </div>
                     <div class="mb-3">
                         <label for="password" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="password" name="password" required>
+                        <input type="password" class="form-control bg-dark text-light" id="password" name="password" required>
                     </div>
                     <div class="mb-3">
                         <label for="region" class="form-label">Region</label>
-                        <input type="text" class="form-control" id="region" name="region" required>
+                        <input type="text" class="form-control bg-dark text-light" id="region" name="region" required>
                     </div>
                     <button type="submit" class="btn btn-primary">Register</button>
                 </form>
