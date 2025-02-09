@@ -8,7 +8,6 @@ class TypingTutor {
         this.keystrokesDisplay = document.getElementById('keystrokes');
         this.correctDisplay = document.getElementById('correct');
         this.incorrectDisplay = document.getElementById('incorrect');
-        this.timeLeftDisplay = document.getElementById('timeLeft');
 
         this.currentText = '';
         this.startTime = null;
@@ -17,8 +16,6 @@ class TypingTutor {
         this.keystrokes = 0;
         this.correctChars = 0;
         this.incorrectChars = 0;
-        this.timeLeft = 60;
-        this.timerInterval = null;
         this.keyboard = new KeyboardDisplay();
 
         this.lessons = {
@@ -41,16 +38,6 @@ class TypingTutor {
                         "कंप्यूटर शिक्षा आज के समय की मांग है"
                     ]
                 }
-            ],
-            'hindi-rem': [
-                {
-                    level: 1,
-                    texts: [
-                        "हिंदी टाइपिंग सीखें और रोजगार के अवसर बढ़ाएं",
-                        "नियमित अभ्यास से टाइपिंग में सुधार होता है",
-                        "गति के साथ शुद्धता भी महत्वपूर्ण है"
-                    ]
-                }
             ]
         };
 
@@ -64,19 +51,6 @@ class TypingTutor {
         this.languageSelect.addEventListener('change', () => this.initializeLesson());
     }
 
-    startTimer() {
-        if (this.timerInterval) clearInterval(this.timerInterval);
-        this.timeLeft = 60;
-        this.timerInterval = setInterval(() => {
-            this.timeLeft--;
-            this.timeLeftDisplay.textContent = this.timeLeft;
-            if (this.timeLeft <= 0) {
-                this.completeLesson();
-                clearInterval(this.timerInterval);
-            }
-        }, 1000);
-    }
-
     initializeLesson() {
         this.currentIndex = 0;
         this.errors = 0;
@@ -84,9 +58,6 @@ class TypingTutor {
         this.correctChars = 0;
         this.incorrectChars = 0;
         this.startTime = null;
-        if (this.timerInterval) clearInterval(this.timerInterval);
-        this.timeLeft = 60;
-        this.timeLeftDisplay.textContent = this.timeLeft;
 
         const layout = this.languageSelect.value;
         const lessonSet = this.lessons[layout] || this.lessons.english;
@@ -116,7 +87,6 @@ class TypingTutor {
     checkInput() {
         if (!this.startTime) {
             this.startTime = new Date();
-            this.startTimer();
         }
 
         const currentChar = this.currentText[this.currentIndex];
@@ -159,8 +129,6 @@ class TypingTutor {
     }
 
     async completeLesson() {
-        if (this.timerInterval) clearInterval(this.timerInterval);
-
         const wpm = parseInt(this.wpmDisplay.textContent);
         const accuracy = parseInt(this.accuracyDisplay.textContent);
 

@@ -31,13 +31,7 @@ class KeyboardDisplay {
                     ['ओ', 'ए', 'अ', 'इ', 'उ', 'फ', 'ऱ', 'ख', 'थ', 'छ', 'ठ', 'ऎ'],
                     ['ँ', 'ण', 'ऩ', 'ऴ', 'ळ', 'श', 'ष', 'श्र', '।', 'य़']
                 ]
-            },
-            'hindi-rem': [
-                ['ज्ञ', '१', '२', '३', '४', '५', '६', '७', '८', '९', '०', '-', 'ृ'],
-                ['त्त', 'ँ', 'े', 'र', 'त', 'य', 'ु', 'ि', 'ो', 'प', 'ै', 'ृ'],
-                ['ा', 'स', 'द', 'ि', 'ग', 'ह', 'ज', 'क', 'ल', 'ः', '\"'],
-                ['े', 'ॅ', 'ॉ', 'ब', 'न', 'म', 'ं', ',', '.', 'य़']
-            ]
+            }
         };
 
         this.init();
@@ -69,14 +63,13 @@ class KeyboardDisplay {
 
     render() {
         this.keyboardContainer.innerHTML = '';
-        const layoutSet = this.layouts[this.currentLayout] || this.layouts.english;
-        const layout = this.shiftPressed ? layoutSet.shift : layoutSet.normal;
+        const layout = this.layouts[this.currentLayout] || this.layouts.english;
+        const currentLayout = this.shiftPressed ? layout.shift : layout.normal;
 
-        // Add language-specific class for proper font rendering
         this.keyboardContainer.className = this.currentLayout.startsWith('hindi') ? 
             'keyboard-display hindi-text' : 'keyboard-display';
 
-        layout.forEach(row => {
+        currentLayout.forEach(row => {
             const rowDiv = document.createElement('div');
             rowDiv.className = 'keyboard-row d-flex justify-content-center mb-1';
 
