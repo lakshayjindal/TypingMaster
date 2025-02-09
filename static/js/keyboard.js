@@ -11,15 +11,15 @@ class KeyboardDisplay {
             ],
             'hindi-inscript': [
                 ['ॊ', '१', '२', '३', '४', '५', '६', '७', '८', '९', '०', '-', 'ृ'],
-                ['ौ', 'ै', 'ा', 'ी', 'ू', 'ब', 'ह', 'ग', 'द', 'ज', 'ड', 'ड़'],
-                ['ो', 'े', '्', 'ि', 'ु', 'प', 'र', 'क', 'त', 'च', 'ट'],
-                ['ं', 'म', 'न', 'व', 'ल', 'स', 'य', 'भ', 'ष']
+                ['ौ', 'ै', 'ा', 'ी', 'ू', 'ब', 'ह', 'ग', 'द', 'ज', 'ड', 'ड़', 'ॉ'],
+                ['ो', 'े', '्', 'ि', 'ु', 'प', 'र', 'क', 'त', 'च', 'ट', 'ॆ'],
+                ['ं', 'म', 'न', 'व', 'ल', 'स', 'य', ',', '.', 'य़']
             ],
             'hindi-rem': [
-                ['१', '२', '३', '४', '५', '६', '७', '८', '९', '०', '-', '='],
-                ['क', 'ख', 'ग', 'घ', 'ङ', 'च', 'छ', 'ज', 'झ', 'ञ', 'ट', 'ठ'],
-                ['ड', 'ढ', 'ण', 'त', 'थ', 'द', 'ध', 'न', 'प', 'फ', 'ब'],
-                ['भ', 'म', 'य', 'र', 'ल', 'व', 'श', 'ष', 'स', 'ह']
+                ['ज्ञ', '१', '२', '३', '४', '५', '६', '७', '८', '९', '०', '-', 'ृ'],
+                ['त्त', 'ँ', 'े', 'र', 'त', 'य', 'ु', 'ि', 'ो', 'प', 'ै', 'ृ'],
+                ['ा', 'स', 'द', 'ि', 'ग', 'ह', 'ज', 'क', 'ल', 'ः', '\"'],
+                ['े', 'ॅ', 'ॉ', 'ब', 'न', 'म', 'ं', ',', '.', 'य़']
             ]
         };
 
@@ -39,8 +39,12 @@ class KeyboardDisplay {
 
     render() {
         this.keyboardContainer.innerHTML = '';
-
         const layout = this.layouts[this.currentLayout] || this.layouts.english;
+
+        // Add language-specific class for proper font rendering
+        this.keyboardContainer.className = this.currentLayout.startsWith('hindi') ? 
+            'keyboard-display hindi-text' : 'keyboard-display';
+
         layout.forEach(row => {
             const rowDiv = document.createElement('div');
             rowDiv.className = 'keyboard-row d-flex justify-content-center mb-1';

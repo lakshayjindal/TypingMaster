@@ -42,12 +42,21 @@ body {
     display: inline-block;
     margin: 2px;
     padding: 10px;
-    min-width: 40px;
+    min-width: 45px;
+    height: 45px;
     text-align: center;
     background-color: white;
     border: 1px solid #ddd;
     border-radius: 4px;
     cursor: default;
+    font-size: 1.1em;
+    line-height: 1.2;
+    vertical-align: middle;
+}
+
+.hindi-text .key {
+    font-family: 'Noto Sans', sans-serif;
+    font-size: 1.2em;
 }
 
 .key.active {
