@@ -2,41 +2,53 @@
 
 {% block content %}
 <div class="typing-container">
-    <div class="controls mb-4">
-        <select id="languageSelect" class="form-select mb-3">
+    <div class="typing-header d-flex justify-content-between align-items-center mb-4">
+        <div class="timer-container d-flex align-items-center">
+            <div class="status-circle"></div>
+            <div class="timer ms-3">
+                TIME LEFT: <span id="timeLeft">60</span> SEC
+            </div>
+        </div>
+        <select id="languageSelect" class="form-select language-select">
             <option value="english">English</option>
-            <option value="hindi">Hindi (Inscript)</option>
+            <option value="hindi-inscript">Hindi (Inscript)</option>
             <option value="hindi-rem">Hindi (Remington)</option>
         </select>
     </div>
 
-    <div class="typing-area mb-4">
-        <div id="text-display" class="text-display p-3 mb-3"></div>
-        <input type="text" id="typing-input" class="form-control" placeholder="Start typing here...">
-    </div>
+    <div class="main-content d-flex">
+        <div class="typing-area flex-grow-1 me-4">
+            <div id="text-display" class="text-display mb-3"></div>
+            <input type="text" id="typing-input" class="form-control typing-input" placeholder="Start typing here...">
+            <div id="keyboard-display" class="keyboard-display mt-4"></div>
+        </div>
 
-    <div class="stats mb-4">
-        <div class="row">
-            <div class="col">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">WPM</h5>
-                        <p id="wpm" class="card-text">0</p>
-                    </div>
+        <div class="stats-panel">
+            <h5 class="stats-header mb-3">Your Stats</h5>
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-label">WPM</div>
+                    <div id="wpm" class="stat-value">0</div>
                 </div>
-            </div>
-            <div class="col">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Accuracy</h5>
-                        <p id="accuracy" class="card-text">0%</p>
-                    </div>
+                <div class="stat-item">
+                    <div class="stat-label">Accuracy</div>
+                    <div id="accuracy" class="stat-value">0%</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Keystrokes</div>
+                    <div id="keystrokes" class="stat-value">0</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Correct</div>
+                    <div id="correct" class="stat-value">0</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Incorrect</div>
+                    <div id="incorrect" class="stat-value">0</div>
                 </div>
             </div>
         </div>
     </div>
-
-    <div id="keyboard-display" class="keyboard-display mb-4"></div>
 </div>
 
 <script src="{{ url_for('static', filename='js/keyboard.js') }}"></script>

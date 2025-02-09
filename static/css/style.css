@@ -2,8 +2,10 @@
     --primary-color: #3498db;
     --secondary-color: #2ecc71;
     --accent-color: #e74c3c;
-    --background-color: #f5f5f5;
-    --text-color: #333333;
+    --background-color: #000033;
+    --text-color: #ffffff;
+    --panel-bg: #000044;
+    --input-bg: #000055;
 }
 
 body {
@@ -17,25 +19,112 @@ body {
 }
 
 .typing-container {
-    max-width: 800px;
+    max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
 }
 
+.status-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--secondary-color);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.6; }
+    100% { opacity: 1; }
+}
+
+.timer {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: var(--text-color);
+}
+
+.language-select {
+    width: auto;
+    background-color: var(--panel-bg);
+    color: var(--text-color);
+    border: 1px solid var(--primary-color);
+}
+
+.main-content {
+    gap: 2rem;
+}
+
+.typing-area {
+    flex: 3;
+}
+
 .text-display {
-    background-color: white;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    min-height: 100px;
+    background-color: var(--panel-bg);
+    border: 1px solid var(--primary-color);
+    border-radius: 8px;
+    min-height: 120px;
     font-size: 1.2em;
     line-height: 1.5;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--text-color);
+}
+
+.typing-input {
+    font-family: monospace;
+    font-size: 1.2em;
+    background-color: var(--input-bg);
+    color: var(--text-color);
+    border: 1px solid var(--primary-color);
+    padding: 1rem;
+}
+
+.stats-panel {
+    flex: 1;
+    background-color: var(--panel-bg);
+    padding: 1.5rem;
+    border-radius: 8px;
+    border: 1px solid var(--primary-color);
+}
+
+.stats-header {
+    color: var(--text-color);
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-size: 1.2em;
+}
+
+.stats-grid {
+    display: grid;
+    gap: 1rem;
+}
+
+.stat-item {
+    background-color: var(--input-bg);
+    padding: 1rem;
+    border-radius: 6px;
+    text-align: center;
+}
+
+.stat-label {
+    font-size: 0.9em;
+    color: #888;
+    margin-bottom: 0.5rem;
+}
+
+.stat-value {
+    font-size: 1.4em;
+    font-weight: bold;
+    color: var(--text-color);
 }
 
 .keyboard-display {
-    background-color: white;
+    background-color: var(--panel-bg);
     padding: 20px;
-    border-radius: 5px;
+    border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    margin-top: 2rem;
 }
 
 .key {
@@ -45,9 +134,10 @@ body {
     min-width: 45px;
     height: 45px;
     text-align: center;
-    background-color: white;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+    background-color: var(--input-bg);
+    border: 1px solid var(--primary-color);
+    border-radius: 6px;
+    color: var(--text-color);
     cursor: default;
     font-size: 1.1em;
     line-height: 1.2;
@@ -69,21 +159,6 @@ body {
     color: white;
 }
 
-.stats .card {
-    text-align: center;
-}
-
-.stats .card-text {
-    font-size: 1.5em;
-    font-weight: bold;
-    color: var(--primary-color);
-}
-
-#typing-input {
-    font-family: monospace;
-    font-size: 1.2em;
-}
-
 .correct {
     color: var(--secondary-color);
 }
@@ -94,5 +169,5 @@ body {
 }
 
 .current {
-    background-color: #e8e8e8;
+    background-color: rgba(52, 152, 219, 0.2);
 }

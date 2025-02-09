@@ -5,11 +5,20 @@ class TypingTutor {
         this.languageSelect = document.getElementById('languageSelect');
         this.wpmDisplay = document.getElementById('wpm');
         this.accuracyDisplay = document.getElementById('accuracy');
+        this.keystrokesDisplay = document.getElementById('keystrokes');
+        this.correctDisplay = document.getElementById('correct');
+        this.incorrectDisplay = document.getElementById('incorrect');
+        this.timeLeftDisplay = document.getElementById('timeLeft');
 
         this.currentText = '';
         this.startTime = null;
         this.errors = 0;
         this.currentIndex = 0;
+        this.keystrokes = 0;
+        this.correctChars = 0;
+        this.incorrectChars = 0;
+        this.timeLeft = 60;
+        this.timerInterval = null;
         this.keyboard = new KeyboardDisplay();
 
         this.lessons = {
@@ -17,17 +26,9 @@ class TypingTutor {
                 {
                     level: 1,
                     texts: [
-                        "aaa sss ddd fff jjj kkk lll ;;;",
-                        "asdf jkl; asdf jkl; asdf jkl;",
-                        "fjfjfj dkdkdk slslsl ajajaj"
-                    ]
-                },
-                {
-                    level: 2,
-                    texts: [
-                        "The quick brown fox jumps over the lazy dog.",
-                        "Pack my box with five dozen liquor jugs.",
-                        "How vexingly quick daft zebras jump!"
+                        "social media has come a long way in India and its penetration is growing rapidly",
+                        "the quick brown fox jumps over the lazy dog while the sun sets in the west",
+                        "practice makes perfect and consistent effort leads to improvement in typing"
                     ]
                 }
             ],
@@ -35,9 +36,9 @@ class TypingTutor {
                 {
                     level: 1,
                     texts: [
-                        "कमल नमन मनन लाल",
-                        "अनार नाला काला पान",
-                        "राम नाम मन भाता"
+                        "सामाजिक मीडिया ने भारत में एक लंबा सफर तय किया है",
+                        "टाइपिंग सीखने का सबसे अच्छा तरीका नियमित अभ्यास है",
+                        "कंप्यूटर शिक्षा आज के समय की मांग है"
                     ]
                 }
             ],
@@ -45,9 +46,9 @@ class TypingTutor {
                 {
                     level: 1,
                     texts: [
-                        "कखग घङच छजझ",
-                        "टठड ढणत थदध",
-                        "नपफ बभमय रल"
+                        "हिंदी टाइपिंग सीखें और रोजगार के अवसर बढ़ाएं",
+                        "नियमित अभ्यास से टाइपिंग में सुधार होता है",
+                        "गति के साथ शुद्धता भी महत्वपूर्ण है"
                     ]
                 }
             ]
@@ -63,10 +64,29 @@ class TypingTutor {
         this.languageSelect.addEventListener('change', () => this.initializeLesson());
     }
 
+    startTimer() {
+        if (this.timerInterval) clearInterval(this.timerInterval);
+        this.timeLeft = 60;
+        this.timerInterval = setInterval(() => {
+            this.timeLeft--;
+            this.timeLeftDisplay.textContent = this.timeLeft;
+            if (this.timeLeft <= 0) {
+                this.completeLesson();
+                clearInterval(this.timerInterval);
+            }
+        }, 1000);
+    }
+
     initializeLesson() {
         this.currentIndex = 0;
         this.errors = 0;
+        this.keystrokes = 0;
+        this.correctChars = 0;
+        this.incorrectChars = 0;
         this.startTime = null;
+        if (this.timerInterval) clearInterval(this.timerInterval);
+        this.timeLeft = 60;
+        this.timeLeftDisplay.textContent = this.timeLeft;
 
         const layout = this.languageSelect.value;
         const lessonSet = this.lessons[layout] || this.lessons.english;
@@ -76,8 +96,8 @@ class TypingTutor {
         this.displayText();
         this.typingInput.value = '';
         this.typingInput.focus();
+        this.updateStats();
 
-        // Update font family based on language
         this.textDisplay.className = layout.startsWith('hindi') ? 'text-display hindi-text' : 'text-display';
     }
 
@@ -96,6 +116,7 @@ class TypingTutor {
     checkInput() {
         if (!this.startTime) {
             this.startTime = new Date();
+            this.startTimer();
         }
 
         const currentChar = this.currentText[this.currentIndex];
@@ -104,6 +125,8 @@ class TypingTutor {
         if (typedChar === currentChar) {
             this.keyboard.highlightKey(typedChar);
             this.currentIndex++;
+            this.correctChars++;
+            this.keystrokes++;
             this.typingInput.value = '';
             this.displayText();
             this.updateStats();
@@ -113,6 +136,8 @@ class TypingTutor {
             }
         } else if (typedChar) {
             this.errors++;
+            this.incorrectChars++;
+            this.keystrokes++;
             this.keyboard.showError(typedChar);
             this.updateStats();
             this.typingInput.value = '';
@@ -120,20 +145,22 @@ class TypingTutor {
     }
 
     updateStats() {
-        if (!this.startTime) return;
-
-        const timeElapsed = (new Date() - this.startTime) / 1000 / 60;
+        const timeElapsed = this.startTime ? (new Date() - this.startTime) / 1000 / 60 : 0;
         const wordsTyped = this.currentIndex / 5;
-        const wpm = Math.round(wordsTyped / timeElapsed);
+        const wpm = Math.round(wordsTyped / (timeElapsed || 1));
 
-        const totalCharacters = this.currentIndex + this.errors;
-        const accuracy = Math.round(((this.currentIndex) / totalCharacters) * 100) || 0;
+        const accuracy = Math.round((this.correctChars / (this.keystrokes || 1)) * 100);
 
         this.wpmDisplay.textContent = wpm;
         this.accuracyDisplay.textContent = `${accuracy}%`;
+        this.keystrokesDisplay.textContent = this.keystrokes;
+        this.correctDisplay.textContent = this.correctChars;
+        this.incorrectDisplay.textContent = this.incorrectChars;
     }
 
     async completeLesson() {
+        if (this.timerInterval) clearInterval(this.timerInterval);
+
         const wpm = parseInt(this.wpmDisplay.textContent);
         const accuracy = parseInt(this.accuracyDisplay.textContent);
 
@@ -151,11 +178,10 @@ class TypingTutor {
             });
 
             if (response.ok) {
-                // Progress to next level if accuracy is good
                 if (accuracy >= 90 && this.currentLevel < Object.keys(this.lessons[this.languageSelect.value]).length) {
                     this.currentLevel++;
                 }
-                alert(`Lesson completed! Speed: ${wpm} WPM, Accuracy: ${accuracy}%`);
+                alert(`Test completed!\nSpeed: ${wpm} WPM\nAccuracy: ${accuracy}%\nKeystrokes: ${this.keystrokes}\nCorrect: ${this.correctChars}\nIncorrect: ${this.incorrectChars}`);
                 this.initializeLesson();
             }
         } catch (error) {
