@@ -2,25 +2,21 @@ import os
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
-from sqlalchemy import create_engine, text
+from flask_migrate import Migrate  # ✅ Import Flask-Migrate
 from models import User, TypingScore
 from database import db
 
+# ✅ Initialize Flask app
 app = Flask(__name__)
+# ✅ Load configuration from config.py
+app.config.from_pyfile("config.py")
 app.secret_key = os.environ.get("FLASK_SECRET_KEY") or "typing_tutor_secret_key"
 
-# Configure PostgreSQL database
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///todo.db"
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
-    "pool_pre_ping": True,
-    "pool_recycle": 300,
-}
-
-# Initialize database
+# ✅ Initialize database & migrations
 db.init_app(app)
+migrate = Migrate(app, db)  # ✅ Enables `flask db` commands
 
-# Initialize login manager
+# ✅ Initialize Flask-Login
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
@@ -29,10 +25,12 @@ login_manager.login_view = 'login'
 def load_user(user_id):
     return User.query.get(int(user_id))
 
+# ✅ Home Route
 @app.route('/')
 def index():
     return render_template('index.html')
 
+# ✅ Login Route
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -46,6 +44,7 @@ def login():
         flash('Invalid username or password')
     return render_template('auth/login.html')
 
+# ✅ Register Route
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
@@ -82,11 +81,13 @@ def register():
 
     return render_template('auth/register.html')
 
+# ✅ Practice Route (Requires Login)
 @app.route('/practice')
 @login_required
 def practice():
     return render_template('practice.html')
 
+# ✅ Submit Score Route (Requires Login)
 @app.route('/submit_score', methods=['POST'])
 @login_required
 def submit_score():
@@ -106,6 +107,7 @@ def submit_score():
         db.session.rollback()
         return {'status': 'error', 'message': str(e)}, 500
 
+# ✅ Leaderboard Route
 @app.route('/leaderboard')
 def leaderboard():
     try:
@@ -130,6 +132,7 @@ def leaderboard():
         flash('Error loading leaderboard')
         return redirect(url_for('index'))
 
+# ✅ Logout Route
 @app.route('/logout')
 @login_required
 def logout():
@@ -137,6 +140,6 @@ def logout():
     flash('You have been logged out successfully.')
     return redirect(url_for('index'))
 
-# Create database tables within application context
+# ✅ Ensure Tables are Created in Supabase (Alternative to Migrations)
 with app.app_context():
     db.create_all()
